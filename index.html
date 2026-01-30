@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💘 Hoćeš li biti moja Valentine?</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #ffb6c1, #ff6f91);
+      color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 20px;
+      width: min(92vw, 420px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    h1 { margin: 10px 0 6px; font-size: 1.6rem; }
+    p { margin: 6px 0 14px; }
+    .game {
+      position: relative; height: 280px; border-radius: 16px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
+      margin: 12px 0 16px;
+    }
+    .heart {
+      position: absolute; font-size: 28px; cursor: pointer; user-select: none;
+      animation: floatUp 1.8s linear forwards;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,.25));
+    }
+    @keyframes floatUp {
+      from { transform: translateY(100%); opacity: 1; }
+      to { transform: translateY(-120%); opacity: 0; }
+    }
+    .hud { display: flex; justify-content: space-between; font-weight: 600; }
+    .btn {
+      background: #fff; color: #ff3b6b; border: none; border-radius: 999px;
+      padding: 12px 18px; font-size: 1rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,.2);
+    }
+    .btn.secondary { background: transparent; color: #fff; border: 2px solid #fff; }
+    .final {
+      display: none; gap: 12px; margin-top: 10px;
+    }
+    .choices { display: flex; gap: 12px; justify-content: center; }
+    .yes { background: #00e0a4; color: #0a3d2e; }
+    .no { position: relative; }
+    footer { opacity: .85; font-size: .85rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>💘 Mini igra</h1>
+    <p>Skupi <strong>7 srca</strong> tapkanjem 💗</p>
+
+    <div class="hud">
+      <div>Srca: <span id="score">0</span>/7</div>
+      <div>Vreme: <span id="time">20</span>s</div>
+    </div>
+
+    <div class="game" id="game"></div>
+
+    <button class="btn" id="start">Počni</button>
+
+    <div class="final" id="final">
+      <h1>Hoćeš li biti moja Valentine? 🌹</h1>
+      <div class="choices">
+        <button class="btn yes" id="yes">DA 💖</button>
+        <button class="btn secondary no" id="no">NE 🙈</button>
+      </div>
+    </div>
+
+    <footer>Tapkaj srca pre nego što istekne vreme ✨</footer>
+  </div>
+
+  <script>
+    const game = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+    const timeEl = document.getElementById('time');
+    const startBtn = document.getElementById('start');
+    const final = document.getElementById('final');
+    const yesBtn = document.getElementById('yes');
+    const noBtn = document.getElementById('no');
+
+    let score = 0;
+    let time = 20;
+    let timer = null;
+    let spawner = null;
+
+    function spawnHeart() {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = Math.random() > 0.2 ? '💗' : '💖';
+      h.style.left = Math.random() * 85 + '%';
+      h.style.bottom = '-10%';
+      h.onclick = () => {
+        score++; scoreEl.textContent = score;
+        h.remove();
+        if (score >= 7) finish();
+      };
+      game.appendChild(h);
+      setTimeout(() => h.remove(), 1800);
+    }
+
+    function start() {
+      score = 0; time = 20;
+      scoreEl.textContent = score; timeEl.textContent = time;
+      final.style.display = 'none';
+      startBtn.style.display = 'none';
+      game.innerHTML = '';
+      timer = setInterval(() => {
+        time--; timeEl.textContent = time;
+        if (time <= 0) finish();
+      }, 1000);
+      spawner = setInterval(spawnHeart, 450);
+    }
+
+    function finish() {
+      clearInterval(timer); clearInterval(spawner);
+      game.innerHTML = '';
+      final.style.display = 'grid';
+      startBtn.style.display = 'block';
+      startBtn.textContent = 'Igraj opet';
+    }
+
+    startBtn.onclick = start;
+
+    // playful "NE" dugme beži
+    noBtn.onmouseover = () => moveNo();
+    noBtn.ontouchstart = () => moveNo();
+    function moveNo() {
+      const x = Math.random() * 140 - 70;
+      const y = Math.random() * 60 - 30;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    yesBtn.onclick = () => {
+      document.body.innerHTML = `
+        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ff6f91,#ffb6c1);color:#fff;text-align:center;padding:20px;">
+          <div>
+            <h1>🥰 JUPIII!</h1>
+            <p style="font-size:1.2rem">Ulepšala si mi dan 💕</p>
+            <p>Vidimo se za čokoladu i zagrljaje 🍫🤗</p>
+          </div>
+        </div>`;
+    };
+  </script>
+</body>
+</html>
+
