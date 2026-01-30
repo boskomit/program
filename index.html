@@ -28,14 +28,23 @@
       margin: 12px 0 16px;
     }
     .heart {
-      position: absolute; font-size: 28px; cursor: pointer; user-select: none;
-      animation: floatUp 13.5s linear forwards;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,.25));
-    }
+  position: absolute;
+  bottom: 0;
+  font-size: 36px;
+  cursor: pointer;
+  user-select: none;
+  animation: floatUp 3.5s linear forwards;
+}
     @keyframes floatUp {
-      from { transform: translateY(100%); opacity: 1; }
-      to { transform: translateY(-120%); opacity: 0; }
-    }
+  from {
+    transform: translateY(120%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+}
     .hud { display: flex; justify-content: space-between; font-weight: 600; }
     .btn {
       background: #fff; color: #ff3b6b; border: none; border-radius: 999px;
@@ -96,7 +105,6 @@
       h.className = 'heart';
       h.textContent = Math.random() > 0.2 ? '💗' : '💖';
       h.style.left = Math.random() * 85 + '%';
-      h.style.bottom = '-10%';
       h.onclick = () => {
         score++; scoreEl.textContent = score;
         h.remove();
