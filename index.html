@@ -103,7 +103,7 @@
         if (score >= 7) finish();
       };
       game.appendChild(h);
-      setTimeout(() => h.remove(), 1800);
+      setTimeout(() => h.remove(), 3500);
     }
 
     function start() {
@@ -116,7 +116,7 @@
         time--; timeEl.textContent = time;
         if (time <= 0) finish();
       }, 1000);
-      spawner = setInterval(spawnHeart, 450);
+      spawner = setInterval(spawnHeart, 750);
     }
 
     function finish() {
